@@ -1,4 +1,4 @@
-module github.com/tweety53/hw01_hello_now
+module github.com/tweety53/otus_hw/hw01_hello_now
 
 go 1.14
 
