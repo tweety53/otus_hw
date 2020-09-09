@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	const timeLayout = "2006-01-02 03:04:05 -0700 MST"
+	const timeLayout = "2006-01-02 15:04:05 -0700 MST"
 
 	ntpTime, err := ntp.Time("0.beevik-ntp.pool.ntp.org")
 	if err != nil {
