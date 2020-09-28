@@ -10,7 +10,6 @@ import (
 var ErrInvalidString = errors.New("invalid string")
 
 func Unpack(str string) (string, error) {
-
 	if str == "" {
 		return "", nil
 	}
