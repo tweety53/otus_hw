@@ -7,19 +7,17 @@ import (
 	"unicode"
 )
 
-var ErrInvalidString = errors.New("invalid string")
+var (
+	ErrInvalidString = errors.New("invalid string")
+	InvalidSeqRegex  = regexp.MustCompile(`^[0-9].|\\[^(0-9|\\)]|[^\\]\d{2,}|\\(\\{2})$|^\\$`)
+)
 
 func Unpack(str string) (string, error) {
 	if str == "" {
 		return "", nil
 	}
 
-	var hasInvalidSeq bool
-	hasInvalidSeq, err := regexp.MatchString(`^[0-9].|\\[^(0-9|\\)]|[^\\]\d{2,}|\\(\\{2})$|^\\$`, str)
-	if err != nil {
-		return "", err
-	}
-	if hasInvalidSeq {
+	if InvalidSeqRegex.MatchString(str) {
 		return "", ErrInvalidString
 	}
 
