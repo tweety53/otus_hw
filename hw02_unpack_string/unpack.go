@@ -14,8 +14,11 @@ func Unpack(str string) (string, error) {
 		return "", nil
 	}
 
-	hasInvalidSeq, _ := regexp.MatchString(`^[0-9].|\\[^(0-9|\\)]|[^\\]\d{2,}|\\(\\{2})$|^\\$`, str)
-
+	var hasInvalidSeq bool
+	hasInvalidSeq, err := regexp.MatchString(`^[0-9].|\\[^(0-9|\\)]|[^\\]\d{2,}|\\(\\{2})$|^\\$`, str)
+	if err != nil {
+		return "", err
+	}
 	if hasInvalidSeq {
 		return "", ErrInvalidString
 	}
