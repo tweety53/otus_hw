@@ -57,4 +57,17 @@ func TestTop10(t *testing.T) {
 			require.ElementsMatch(t, expected, Top10(text))
 		}
 	})
+
+	t.Run("whitespaces", func(t *testing.T) {
+		require.Len(t, Top10("    "), 0)
+	})
+
+	t.Run("short str", func(t *testing.T) {
+		expected := []string{"b", "a", "c"}
+		require.ElementsMatch(t, expected, Top10("a b b c"))
+	})
+
+	t.Run("single word", func(t *testing.T) {
+		require.ElementsMatch(t, []string{"word"}, Top10("word"))
+	})
 }
