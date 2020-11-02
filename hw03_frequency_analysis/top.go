@@ -1,6 +1,5 @@
 package hw03_frequency_analysis //nolint:golint,stylecheck
 import (
-	"regexp"
 	"sort"
 	"strings"
 )
@@ -10,11 +9,8 @@ type wordCnt struct {
 	n int
 }
 
-var spacesRegex = regexp.MustCompile(`\s+`)
-
 func Top10(str string) []string {
-	str = spacesRegex.ReplaceAllString(str, " ")
-	if str == "" || str == " " {
+	if str == "" {
 		return []string{}
 	}
 
@@ -45,7 +41,7 @@ func Top10(str string) []string {
 func collectCounters(str string) map[string]int {
 	counters := make(map[string]int)
 
-	words := strings.Split(str, " ")
+	words := strings.Fields(str)
 	for i := range words {
 		counters[words[i]]++
 	}
