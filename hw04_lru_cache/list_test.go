@@ -48,4 +48,47 @@ func TestList(t *testing.T) {
 		}
 		require.Equal(t, []int{70, 80, 60, 40, 10, 30, 50}, elems)
 	})
+
+	t.Run("remove from single elem list", func(t *testing.T) {
+		l := NewList()
+		i := l.PushFront(1)
+		l.Remove(i)
+		require.Equal(t, 0, l.Len())
+		require.Nil(t, l.Front())
+		require.Nil(t, l.Back())
+	})
+
+	t.Run("reverse full list", func(t *testing.T) {
+		l := NewList()
+		for i := 1; i <= 5; i++ {
+			l.PushFront(i)
+		}
+
+		for i := 1; i <= 5; i++ {
+			l.MoveToFront(l.Back())
+		}
+
+		elems := make([]int, 0, l.Len())
+		for i := l.Front(); i != nil; i = i.Next {
+			elems = append(elems, i.Value.(int))
+		}
+		require.Equal(t, []int{5, 4, 3, 2, 1}, elems)
+	})
+
+	t.Run("MoveToFront() for all elems returns start result", func(t *testing.T) {
+		l := NewList()
+		for i := 1; i <= 5; i++ {
+			l.PushBack(i)
+		}
+
+		for i := 1; i <= 5; i++ {
+			l.MoveToFront(l.Back())
+		}
+
+		elems := make([]int, 0, l.Len())
+		for i := l.Front(); i != nil; i = i.Next {
+			elems = append(elems, i.Value.(int))
+		}
+		require.Equal(t, []int{1, 2, 3, 4, 5}, elems)
+	})
 }
