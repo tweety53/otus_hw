@@ -15,7 +15,7 @@ var (
 )
 
 func Copy(fromPath, toPath string, offset, limit int64) error {
-	//fromPath validation
+	// fromPath validation
 	fi, err := os.Stat(fromPath)
 	if err != nil {
 		return err
@@ -24,7 +24,7 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 		return ErrUnsupportedFile
 	}
 
-	//offset validation
+	// offset validation
 	if offset > fi.Size() {
 		return ErrOffsetExceedsFileSize
 	}
@@ -62,7 +62,7 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 	barReader := bar.NewProxyReader(srcFile)
 
 	_, err = io.CopyN(dstFile, barReader, limit)
-	if err != nil && err != io.EOF {
+	if err != nil && errors.Is(err, io.EOF) {
 		return err
 	}
 
