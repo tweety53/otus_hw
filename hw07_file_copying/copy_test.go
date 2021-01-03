@@ -10,18 +10,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const OutFileName = "out.txt"
+const outFileName = "out.txt"
 
 func TestCopy(t *testing.T) {
-	defer os.Remove(OutFileName)
+	defer os.Remove(outFileName)
 
 	t.Run("src file not exists err", func(t *testing.T) {
-		err := Copy("random_file_name.txt", OutFileName, 0, 0)
+		err := Copy("random_file_name.txt", outFileName, 0, 0)
 		require.Error(t, err)
 	})
 
 	t.Run("src file is not regular", func(t *testing.T) {
-		err := Copy("/dev/urandom", OutFileName, 0, 0)
+		err := Copy("/dev/urandom", outFileName, 0, 0)
 		require.EqualError(t, err, ErrUnsupportedFile.Error())
 	})
 
@@ -37,7 +37,7 @@ func TestCopy(t *testing.T) {
 			log.Fatal(err)
 		}
 
-		err = Copy(tmpFile.Name(), OutFileName, 5, 0)
+		err = Copy(tmpFile.Name(), outFileName, 5, 0)
 		require.EqualError(t, err, ErrOffsetExceedsFileSize.Error())
 	})
 
@@ -73,10 +73,10 @@ func TestCopy(t *testing.T) {
 				log.Fatal(err)
 			}
 
-			err = Copy(tmpFile.Name(), OutFileName, tt.offset, tt.limit)
+			err = Copy(tmpFile.Name(), outFileName, tt.offset, tt.limit)
 			require.NoError(t, err)
 
-			outFile, err := os.Open(OutFileName)
+			outFile, err := os.Open(outFileName)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -86,7 +86,7 @@ func TestCopy(t *testing.T) {
 				}
 			}()
 
-			outFileData, err := ioutil.ReadFile(OutFileName)
+			outFileData, err := ioutil.ReadFile(outFileName)
 			if err != nil {
 				log.Fatal(err)
 			}

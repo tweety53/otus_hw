@@ -31,9 +31,7 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 
 	limit = adjustLimit(limit, fi.Size(), offset)
 
-	var srcFile *os.File
-
-	srcFile, err = os.Open(fromPath)
+	srcFile, err := os.Open(fromPath)
 	if err != nil {
 		return err
 	}
@@ -62,7 +60,7 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 	barReader := bar.NewProxyReader(srcFile)
 
 	_, err = io.CopyN(dstFile, barReader, limit)
-	if err != nil && errors.Is(err, io.EOF) {
+	if err != nil && !errors.Is(err, io.EOF) {
 		return err
 	}
 
