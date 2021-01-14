@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 )
@@ -12,9 +13,9 @@ const (
 	exitCodeCannotSetEnv   = 402
 )
 
-// RunCmd runs a command + arguments (cmd) with environment variables from env
+// RunCmd runs a command + arguments (cmd) with environment variables from env.
 func RunCmd(cmd []string, env Environment) (returnCode int) {
-	exCmd := exec.Command(cmd[0], cmd[1:]...)
+	exCmd := exec.Command(cmd[0], cmd[1:]...) //nolint:gosec
 
 	code := fillEnv(env)
 	if code != 0 {
@@ -24,7 +25,9 @@ func RunCmd(cmd []string, env Environment) (returnCode int) {
 	exCmd.Stdout = os.Stdout
 	exCmd.Stderr = os.Stderr
 	if err := exCmd.Run(); err != nil {
-		if exitError, ok := err.(*exec.ExitError); ok {
+		var exitError *exec.ExitError
+
+		if errors.As(err, &exitError) {
 			return exitError.ExitCode()
 		}
 
